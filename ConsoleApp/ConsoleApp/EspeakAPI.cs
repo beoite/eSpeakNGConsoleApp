@@ -231,7 +231,7 @@
 	        void* user_data);
         */
         [System.Runtime.InteropServices.DllImport(DllImportPath, CallingConvention = MyCallingConvention, CharSet = MyCharSet, SetLastError = MySetLastError, ThrowOnUnmappableChar = MyThrowOnUnmappableChar)]
-        public static extern int espeak_Synth(System.IntPtr text, int size, uint position, int position_type, uint end_position, uint flags, System.IntPtr unique_identifier, System.IntPtr user_data);
+        public static extern int espeak_Synth([System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)] string text, int size, uint position, int position_type, uint end_position, uint flags, System.IntPtr unique_identifier, System.IntPtr user_data);
 
     }
 }

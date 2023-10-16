@@ -59,7 +59,6 @@
 
         public static EspeakVoiceIN EspeakVoiceIn = new EspeakVoiceIN();
         public static System.IntPtr EspeakVoiceInPtr = new System.IntPtr();
-        public static System.IntPtr EspeakTextPtr = new System.IntPtr();
 
         // Afrikaans
         // English
@@ -192,10 +191,7 @@
             int utf8ByteCount = System.Text.ASCIIEncoding.UTF8.GetByteCount(text);
             System.Console.WriteLine(nameof(utf8ByteCount) + " " + utf8ByteCount);
 
-            EspeakTextPtr = System.Runtime.InteropServices.Marshal.StringToHGlobalUni(text);
-            System.Console.WriteLine(nameof(EspeakTextPtr) + " " + EspeakTextPtr);
-
-            int Synth = EspeakAPI.espeak_Synth(EspeakTextPtr, utf8ByteCount, 0, 0, 0, 0, UniqueIdentifier, UserData);
+            int Synth = EspeakAPI.espeak_Synth(text, utf8ByteCount, 0, 0, 0, 0, UniqueIdentifier, UserData);
             System.Console.WriteLine(nameof(EspeakAPI.espeak_Synth) + " " + Synth + " " + text);
 
             //int IsPlaying = espeak_IsPlaying();

@@ -71,15 +71,15 @@
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
     public struct EspeakVoiceOUT
     {
-        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)]
+        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPStr)]
         //[System.Runtime.InteropServices.FieldOffsetAttribute(MarshalConfig.ByteSize * 0)]
         public string Name;
 
-        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)]
+        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPStr)]
         //[System.Runtime.InteropServices.FieldOffsetAttribute(MarshalConfig.ByteSize * 1)]
         public string Languages;
 
-        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)]
+        [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPStr)]
         //[System.Runtime.InteropServices.FieldOffsetAttribute(MarshalConfig.ByteSize * 2)]
         public string Identifier;
 
