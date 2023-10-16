@@ -1,0 +1,75 @@
+﻿namespace ConsoleApp
+{
+    public static class Espeak_FUNCTIONS
+    {
+        public static string DllCanUnloadNow = System.String.Empty;
+        public static string DllGetClassObject = System.String.Empty;
+        public static string GetFileLength = System.String.Empty;
+        public static string create_text_decoder = System.String.Empty;
+        public static string destroy_text_decoder = System.String.Empty;
+        public static string espeak_Cancel = System.String.Empty;
+        public static string espeak_Char = System.String.Empty;
+        public static string espeak_CompileDictionary = System.String.Empty;
+        public static string espeak_GetCurrentVoice = System.String.Empty;
+        public static string espeak_GetParameter = System.String.Empty;
+        public static string espeak_Info = System.String.Empty;
+        public static string espeak_Initialize = System.String.Empty;
+        public static string espeak_IsPlaying = System.String.Empty;
+        public static string espeak_Key = System.String.Empty;
+        public static string espeak_ListVoices = System.String.Empty;
+        public static string espeak_SetParameter = System.String.Empty;
+        public static string espeak_SetPhonemeCallback = System.String.Empty;
+        public static string espeak_SetPhonemeTrace = System.String.Empty;
+        public static string espeak_SetPunctuationList = System.String.Empty;
+        public static string espeak_SetSynthCallback = System.String.Empty;
+        public static string espeak_SetUriCallback = System.String.Empty;
+        public static string espeak_SetVoiceByFile = System.String.Empty;
+        public static string espeak_SetVoiceByName = System.String.Empty;
+        public static string espeak_SetVoiceByProperties = System.String.Empty;
+        public static string espeak_Synchronize = System.String.Empty;
+        public static string espeak_Synth = System.String.Empty;
+        public static string espeak_Synth_Mark = System.String.Empty;
+        public static string espeak_Terminate = System.String.Empty;
+        public static string espeak_TextToPhonemes = System.String.Empty;
+        public static string espeak_ng_Cancel = System.String.Empty;
+        public static string espeak_ng_ClearErrorContext = System.String.Empty;
+        public static string espeak_ng_CompileDictionary = System.String.Empty;
+        public static string espeak_ng_CompileIntonation = System.String.Empty;
+        public static string espeak_ng_CompileIntonationPath = System.String.Empty;
+        public static string espeak_ng_CompileMbrolaVoice = System.String.Empty;
+        public static string espeak_ng_CompilePhonemeData = System.String.Empty;
+        public static string espeak_ng_CompilePhonemeDataPath = System.String.Empty;
+        public static string espeak_ng_EncodingFromName = System.String.Empty;
+        public static string espeak_ng_GetSampleRate = System.String.Empty;
+        public static string espeak_ng_GetStatusCodeMessage = System.String.Empty;
+        public static string espeak_ng_Initialize = System.String.Empty;
+        public static string espeak_ng_InitializeOutput = System.String.Empty;
+        public static string espeak_ng_InitializePath = System.String.Empty;
+        public static string espeak_ng_PrintStatusCodeMessage = System.String.Empty;
+        public static string espeak_ng_SetConstF0 = System.String.Empty;
+        public static string espeak_ng_SetOutputHooks = System.String.Empty;
+        public static string espeak_ng_SetParameter = System.String.Empty;
+        public static string espeak_ng_SetPhonemeEvents = System.String.Empty;
+        public static string espeak_ng_SetPunctuationList = System.String.Empty;
+        public static string espeak_ng_SetRandSeed = System.String.Empty;
+        public static string espeak_ng_SetVoiceByFile = System.String.Empty;
+        public static string espeak_ng_SetVoiceByName = System.String.Empty;
+        public static string espeak_ng_SetVoiceByProperties = System.String.Empty;
+        public static string espeak_ng_SpeakCharacter = System.String.Empty;
+        public static string espeak_ng_SpeakKeyName = System.String.Empty;
+        public static string espeak_ng_Synchronize = System.String.Empty;
+        public static string espeak_ng_Synthesize = System.String.Empty;
+        public static string espeak_ng_SynthesizeMark = System.String.Empty;
+        public static string espeak_ng_Terminate = System.String.Empty;
+        public static string strncpy0 = System.String.Empty;
+        public static string text_decoder_decode_string = System.String.Empty;
+        public static string text_decoder_decode_string_auto = System.String.Empty;
+        public static string text_decoder_decode_string_multibyte = System.String.Empty;
+        public static string text_decoder_decode_wstring = System.String.Empty;
+        public static string text_decoder_eof = System.String.Empty;
+        public static string text_decoder_get_buffer = System.String.Empty;
+        public static string text_decoder_getc = System.String.Empty;
+        public static string text_decoder_peekc = System.String.Empty;
+        public static string utf8_in = System.String.Empty;
+    }
+}
