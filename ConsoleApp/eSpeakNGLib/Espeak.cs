@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp
+﻿namespace eSpeakNGLib
 {
     public static class Espeak
     {

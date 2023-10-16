@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace ConsoleApp
+﻿namespace ConsoleApp
 {
     public class Program
     {
@@ -9,7 +7,7 @@ namespace ConsoleApp
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Espeak.Initialize();
+            eSpeakNGLib.Espeak.Initialize();
 
             if (args.Length == 0)
             {
@@ -20,28 +18,28 @@ namespace ConsoleApp
             }
             else
             {
-                Espeak.Synth(args[0]);
+                eSpeakNGLib.Espeak.Synth(args[0]);
             }
         }
 
         private static void Loop()
         {
-            int id = Config.RandomEnglish();
-            string name = Espeak.ListVoices[id].Name + Espeak.ZeroTerminator;
+            int id = eSpeakNGLib.Config.RandomEnglish();
+            string name = eSpeakNGLib.Espeak.ListVoices[id].Name + eSpeakNGLib.Espeak.ZeroTerminator;
             byte gender = 2;
             byte age = 0x53;
-            Espeak.SetVoiceByProperties(name, gender, age);
+            eSpeakNGLib.Espeak.SetVoiceByProperties(name, gender, age);
             Nato();
         }
 
         private static void Nato()
         {
-            NATO nato = new NATO();
+            eSpeakNGLib.NATO nato = new eSpeakNGLib.NATO();
             System.Reflection.FieldInfo[] fields = nato.GetType().GetFields();
             for (int i = 0; i < fields.Length; i++)
             {
                 System.Reflection.FieldInfo fieldInfo = fields[i];
-                Espeak.Synth(fieldInfo.Name);
+                eSpeakNGLib.Espeak.Synth(fieldInfo.Name);
             }
         }
     }

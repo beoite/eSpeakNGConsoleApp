@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp
+﻿namespace eSpeakNGLib
 {
     /// typedef struct {
     ///     const char* name;           // a given name for this voice. UTF8 string.
