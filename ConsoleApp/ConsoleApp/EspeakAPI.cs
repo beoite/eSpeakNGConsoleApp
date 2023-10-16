@@ -79,7 +79,7 @@
         ESPEAK_API espeak_VOICE *espeak_GetCurrentVoice(void);
         */
         [System.Runtime.InteropServices.DllImport(DllImportPath, CallingConvention = MyCallingConvention, CharSet = MyCharSet, SetLastError = MySetLastError, ThrowOnUnmappableChar = MyThrowOnUnmappableChar)]
-        public static extern System.UIntPtr espeak_GetCurrentVoice();
+        public static extern System.IntPtr espeak_GetCurrentVoice();
 
         /* espeak_Initialize
            Must be called before any synthesis functions are called.
@@ -146,7 +146,7 @@
         ESPEAK_API espeak_ERROR espeak_SetVoiceByName(const char *name);
         */
         [System.Runtime.InteropServices.DllImport(DllImportPath, CallingConvention = MyCallingConvention, CharSet = MyCharSet, SetLastError = MySetLastError, ThrowOnUnmappableChar = MyThrowOnUnmappableChar)]
-        public static extern int espeak_SetVoiceByName(System.IntPtr name);
+        public static extern int espeak_SetVoiceByName([System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)] string name);
 
 
         /* espeak_SetVoiceByProperties

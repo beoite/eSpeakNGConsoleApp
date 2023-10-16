@@ -4,13 +4,16 @@
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("");
-            //Espeak.Initialize(espeak_AUDIO_OUTPUT.AUDIO_OUTPUT_SYNCH_PLAYBACK, Phrases.Alphabet);
-            //Espeak.Speak("Zen 2 is a computer processor microarchitecture by AMD. It is the successor of AMD's Zen and Zen+ microarchitectures, and is fabricated on the 7nm MOSFET node from TSMC.");
-
             Espeak.Initialize();
 
-            Nato();
+            if (args.Length == 0)
+            {
+                Nato();
+            }
+            else
+            {
+                Espeak.Speak(args[0]);
+            }
         }
 
         private static void Nato()
