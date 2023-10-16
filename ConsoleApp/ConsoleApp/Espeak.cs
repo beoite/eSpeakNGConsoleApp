@@ -2,6 +2,8 @@
 {
     public static class Espeak
     {
+        public static string ZeroTerminator = "\0";
+
         /// <summary>
         /// where to look for libespeak-ng.dll, espeak-ng-data
         /// </summary>
@@ -49,14 +51,18 @@
         /// eSpeak includes this number in espeak_EVENT messages which are the result of
         /// this call of espeak_Synth().
         /// </summary>
-        public static System.IntPtr UniqueIdentifier = new System.IntPtr();
+        public static System.IntPtr UniqueIdentifier = System.IntPtr.Zero;
 
         /// <summary>
         /// a pointer (or NULL) which will be passed to the callback function in
         /// espeak_EVENT messages.
         /// </summary>
-        public static System.IntPtr UserData = new System.IntPtr();
+        public static System.IntPtr UserData = System.IntPtr.Zero;
 
+        public static EspeakVoice EspeakVoiceInput = new EspeakVoice();
+        public static System.IntPtr VoiceSpec = System.IntPtr.Zero;
+
+        public static System.IntPtr ListVoicesPtr = System.IntPtr.Zero;
         public static System.Collections.Generic.List<EspeakVoice> ListVoices = new System.Collections.Generic.List<EspeakVoice>();
 
         public static void Initialize()
@@ -80,69 +86,73 @@
             System.Console.WriteLine(nameof(EspeakAPI.espeak_Initialize) + " " + nameof(SampleRateHz) + " " + SampleRateHz);
 
             // espeak_ListVoices - array of espeak_VOICE pointers
-            System.IntPtr listVoices = EspeakAPI.espeak_ListVoices(new System.IntPtr());
-            System.Console.WriteLine(nameof(listVoices) + " " + listVoices);
+            ListVoicesPtr = EspeakAPI.espeak_ListVoices(System.IntPtr.Zero);
+            System.Console.WriteLine(nameof(ListVoicesPtr) + " " + ListVoicesPtr);
 
-            ListVoicesPointerArray arrlistVoices = (ListVoicesPointerArray)System.Runtime.InteropServices.Marshal.PtrToStructure(listVoices, typeof(ListVoicesPointerArray));
-            System.Console.WriteLine(nameof(arrlistVoices) + " " + arrlistVoices.PointerArray.Length);
-
-            for (int i = 0; i < arrlistVoices.PointerArray.Length; i++)
+            object? pointerArray = System.Runtime.InteropServices.Marshal.PtrToStructure(ListVoicesPtr, typeof(ListVoicesPointerArray));
+            if (pointerArray != null)
             {
-                System.IntPtr voicePtr = arrlistVoices.PointerArray[i];
-                EspeakVoice voice = (EspeakVoice)System.Runtime.InteropServices.Marshal.PtrToStructure(voicePtr, typeof(EspeakVoice));
-                ListVoices.Add(voice);
+                ListVoicesPointerArray listVoices = (ListVoicesPointerArray)pointerArray;
+                System.Console.WriteLine(nameof(listVoices) + " " + listVoices.PointerArray.Length);
+
+                for (int i = 0; i < listVoices.PointerArray.Length; i++)
+                {
+                    System.IntPtr voicePtr = listVoices.PointerArray[i];
+                    object? voiceObj = System.Runtime.InteropServices.Marshal.PtrToStructure(voicePtr, typeof(EspeakVoice));
+                    if (voiceObj != null)
+                    {
+                        EspeakVoice voice = (EspeakVoice)voiceObj;
+                        ListVoices.Add(voice);
+                    }
+                }
             }
-
-            //for (int i = 0; i < ListVoices.Count; i++)
-            //{
-            //    EspeakVoice voice = ListVoices[i];
-            //    System.Console.WriteLine(i + " " + voice.Name);
-            //}
-
-            GetVoice();
-
-            string name = ListVoices[Config.VoiceID].Name;
-            SetVoiceByName(name);
-            GetVoice();
-
-            SetVoiceByProperties();
-            GetVoice();
         }
 
-        private static void SetVoiceByName(string name)
+        public static void PrintListVoices()
         {
+            for (int i = 0; i < ListVoices.Count; i++)
+            {
+                EspeakVoice voice = ListVoices[i];
+                System.Console.WriteLine(i + " " + voice.ToString());
+            }
+        }
+
+        public static void SetVoiceByName(int id)
+        {
+            string name = ListVoices[id].Name;
             Espeak_ERROR setVoiceByName = (Espeak_ERROR)EspeakAPI.espeak_SetVoiceByName(name);
             System.Console.WriteLine(nameof(setVoiceByName) + " " + setVoiceByName);
         }
 
-        private static void SetVoiceByProperties()
+        public static void SetVoiceByProperties(string name, byte gender, byte age)
         {
-            string Name = ListVoices[Config.VoiceID].Name;
-            string Languages = System.String.Empty;
-            string Identifier = System.String.Empty;
+            EspeakVoiceInput = new EspeakVoice();
+            EspeakVoiceInput.Name = name;
+            EspeakVoiceInput.Languages = string.Empty;
+            EspeakVoiceInput.Identifier = string.Empty;
+            EspeakVoiceInput.Gender = gender;
+            EspeakVoiceInput.Age = age;
+            EspeakVoiceInput.Variant = 0;
+            System.Console.WriteLine(nameof(EspeakVoiceInput) + " " + EspeakVoiceInput.ToString());
 
-            EspeakVoice EspeakVoiceIn = new EspeakVoice();
-            EspeakVoiceIn = new EspeakVoice();
-            EspeakVoiceIn.Name = Name;
-            EspeakVoiceIn.Languages = Languages;
-            EspeakVoiceIn.Identifier = Identifier;
-            EspeakVoiceIn.Gender = (uint)System.Math.Round(System.Random.Shared.NextDouble() + 1, 0);
-            EspeakVoiceIn.Age = (uint)System.Math.Round(System.Random.Shared.NextDouble() * 100, 0);
-            EspeakVoiceIn.Variant = 0;
-            System.Console.WriteLine(nameof(EspeakVoiceIn) + " " + EspeakVoiceIn.ToString());
+            if (VoiceSpec != System.IntPtr.Zero)
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(VoiceSpec);
+                VoiceSpec = System.IntPtr.Zero;
+            }
+            int size = System.Runtime.InteropServices.Marshal.SizeOf(EspeakVoiceInput);
+            VoiceSpec = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
+            System.Runtime.InteropServices.Marshal.StructureToPtr(EspeakVoiceInput, VoiceSpec, false);
 
-            //int size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(EspeakVoice));
-            //EspeakVoiceInPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
-            //System.Runtime.InteropServices.Marshal.StructureToPtr(EspeakVoiceIn, EspeakVoiceInPtr, true);
+            Espeak_ERROR setVoiceByProperties = (Espeak_ERROR)EspeakAPI.espeak_SetVoiceByProperties(VoiceSpec);
+            System.Console.WriteLine(nameof(setVoiceByProperties) + " " + setVoiceByProperties.ToString());
 
-            //Espeak_ERROR SetVoiceByProperties = (Espeak_ERROR)EspeakAPI.espeak_SetVoiceByProperties(EspeakVoiceInPtr);
-            //System.Console.WriteLine(nameof(SetVoiceByProperties) + " " + SetVoiceByProperties.ToString());
+            GetCurrentVoice();
         }
 
-        public static void Speak(string tts)
+        public static void Synth(string tts)
         {
-            string zeroTerminator = "\0";
-            string text = tts + zeroTerminator;
+            string text = tts + ZeroTerminator;
 
             // Equal to (or greatrer than) the size of the text data, in bytes.  
             int utf8ByteCount = System.Text.ASCIIEncoding.UTF8.GetByteCount(text);
@@ -153,7 +163,7 @@
             System.Console.WriteLine(nameof(EspeakAPI.espeak_Synth) + " " + Synth + " " + text);
         }
 
-        private static void GetVoice()
+        public static void GetCurrentVoice()
         {
             System.IntPtr getCurrentVoice = EspeakAPI.espeak_GetCurrentVoice();
             EspeakVoice currentVoice = (EspeakVoice)System.Runtime.InteropServices.Marshal.PtrToStructure(getCurrentVoice, typeof(EspeakVoice));

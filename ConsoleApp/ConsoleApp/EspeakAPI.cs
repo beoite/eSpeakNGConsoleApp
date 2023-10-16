@@ -66,7 +66,7 @@
 
         public const System.Runtime.InteropServices.CallingConvention MyCallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
         public const System.Runtime.InteropServices.CharSet MyCharSet = System.Runtime.InteropServices.CharSet.Auto;
-        public const bool MySetLastError = true;
+        public const bool MySetLastError = false;
         public const bool MyThrowOnUnmappableChar = true;
 
         /* espeak_Cancel
