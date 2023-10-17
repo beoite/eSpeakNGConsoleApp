@@ -1,6 +1,6 @@
 ﻿namespace eSpeakNGLib
 {
-    public enum Espeak_AUDIO_OUTPUT
+    public enum EspeakAudioOutput
     {
         /// <summary>
         /// PLAYBACK mode: plays the audio data, supplies events to the calling program 

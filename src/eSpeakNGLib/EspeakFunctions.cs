@@ -1,6 +1,6 @@
 ﻿namespace eSpeakNGLib
 {
-    public static class Espeak_FUNCTIONS
+    public static class EspeakFunctions
     {
         public static string DllCanUnloadNow = System.String.Empty;
         public static string DllGetClassObject = System.String.Empty;

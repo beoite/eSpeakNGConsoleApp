@@ -1,6 +1,6 @@
 ﻿namespace eSpeakNGLib
 {
-    public enum Espeak_ERROR
+    public enum EspeakError
     {
         EE_OK = 0,
         EE_INTERNAL_ERROR = -1,
