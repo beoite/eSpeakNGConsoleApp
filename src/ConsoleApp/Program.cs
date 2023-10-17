@@ -6,11 +6,8 @@
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            eSpeakNGLib.Espeak.Initialize();
-            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ExecutionDirectory) + " " + eSpeakNGLib.Espeak.ExecutionDirectory);
-            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.SampleRateHz) + " " + eSpeakNGLib.Espeak.SampleRateHz);
-            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ListVoicesPtr) + " " + eSpeakNGLib.Espeak.ListVoicesPtr);
-            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ListVoicesPointerArray) + " " + eSpeakNGLib.Espeak.ListVoicesPointerArray.PointerArray.Length);
+            //eSpeakNGLib.Espeak.Initialize();
+            Initialize();
 
             if (args.Length == 0)
             {
@@ -26,7 +23,23 @@
             }
         }
 
-        public static void PrintListVoices()
+        private static void Initialize()
+        {
+            eSpeakNGLib.Espeak.SetExecutionDirectory();
+            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ExecutionDirectory) + " " + eSpeakNGLib.Espeak.ExecutionDirectory);
+
+            eSpeakNGLib.Espeak.AddRegistryEntry();
+            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.AddRegistryEntry) + " " + eSpeakNGLib.Espeak.Result);
+
+            eSpeakNGLib.Espeak.SampleRateHz = eSpeakNGLib.EspeakAPI.espeak_Initialize((int)eSpeakNGLib.Espeak.AudioOutput, eSpeakNGLib.Espeak.BufLength, eSpeakNGLib.Espeak.ExecutionDirectory, eSpeakNGLib.Espeak.Options);
+            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.SampleRateHz) + " " + eSpeakNGLib.Espeak.SampleRateHz);
+
+            eSpeakNGLib.Espeak.BuildListVoices();
+            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ListVoicesPtr) + " " + eSpeakNGLib.Espeak.ListVoicesPtr);
+            System.Console.WriteLine(nameof(eSpeakNGLib.Espeak.ListVoices) + " " + eSpeakNGLib.Espeak.ListVoices.Count);
+        }
+
+        private static void PrintListVoices()
         {
             for (int i = 0; i < eSpeakNGLib.Espeak.ListVoices.Count; i++)
             {
@@ -38,7 +51,7 @@
         private static void SetVoice()
         {
             int id = eSpeakNGLib.Config.RandomEnglish();
-            string name = eSpeakNGLib.Espeak.ListVoices[id].Name + eSpeakNGLib.Espeak.NullTerminator;
+            string name = eSpeakNGLib.Espeak.ListVoices[id].Name;
             byte gender = (byte)System.Random.Shared.Next(1, 3);
             byte age = (byte)System.Random.Shared.Next(1, 100);
             eSpeakNGLib.Espeak.SetVoiceByProperties(name, gender, age);

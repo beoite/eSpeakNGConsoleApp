@@ -2,8 +2,6 @@
 {
     public static class Espeak
     {
-        public static char NullTerminator = System.Char.MinValue;
-
         /// <summary>
         /// where to look for libespeak-ng.dll, espeak-ng-data
         /// </summary>
@@ -36,7 +34,7 @@
         /// Value=0 gives a default of 60mS.
         /// This parameter is only used for AUDIO_OUTPUT_RETRIEVAL and AUDIO_OUTPUT_SYNCHRONOUS modes.
         /// </summary>
-        public static int BufLength = 1000;
+        public static int BufLength = 5000;
 
         /// <summary>
         /// bit 0:  1 = allow espeakEVENT_PHONEME events.
@@ -69,22 +67,39 @@
 
         public static void Initialize()
         {
-            // get executing path
-            string Location = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            ExecutionDirectory = System.IO.Path.GetDirectoryName(Location) + @"/";
+            SetExecutionDirectory();
 
-            // add registry entry to path
-            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
-            {
-                Microsoft.Win32.RegistryKey key;
-                key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey("Software\\Wow6432Node\\eSpeak NG");
-                key.SetValue("Path", ExecutionDirectory);
-                key.Close();
-            }
+            AddRegistryEntry();
 
             // espeak_Initialize, Returns: sample rate in Hz, or -1 (EE_INTERNAL_ERROR).
             SampleRateHz = EspeakAPI.espeak_Initialize((int)AudioOutput, BufLength, ExecutionDirectory, Options);
 
+            BuildListVoices();
+        }
+
+        public static void SetExecutionDirectory()
+        {
+            string Location = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            System.String? dirName = System.IO.Path.GetDirectoryName(Location);
+            dirName = dirName?.Replace(@"\", @"/");
+            ExecutionDirectory = dirName + @"/";
+        }
+
+        public static void AddRegistryEntry()
+        {
+            Result = EspeakError.EE_NOT_FOUND;
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                string text = "Software\\Wow6432Node\\eSpeak NG";
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(text);
+                key.SetValue("Path", ExecutionDirectory);
+                key.Close();
+                Result = EspeakError.EE_OK;
+            }
+        }
+
+        public static void BuildListVoices()
+        {
             // espeak_ListVoices - array of espeak_VOICE pointers
             ListVoicesPtr = EspeakAPI.espeak_ListVoices(System.IntPtr.Zero);
             ListVoices.Clear();
@@ -138,10 +153,9 @@
 
         public static void Synth(string tts)
         {
-            string text = tts + NullTerminator;
             // Equal to (or greatrer than) the size of the text data, in bytes.  
-            int utf8ByteCount = System.Text.ASCIIEncoding.UTF8.GetByteCount(text);
-            Result = (EspeakError)EspeakAPI.espeak_Synth(text, utf8ByteCount, 0, 0, 0, 0, UniqueIdentifier, UserData);
+            int utf8ByteCount = System.Text.ASCIIEncoding.UTF8.GetByteCount(tts);
+            Result = (EspeakError)EspeakAPI.espeak_Synth(tts, utf8ByteCount, 0, 0, 0, 0, UniqueIdentifier, UserData);
         }
 
         public static void GetCurrentVoice()
